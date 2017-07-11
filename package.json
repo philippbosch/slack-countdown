@@ -1,0 +1,25 @@
+{
+  "name": "slack-countdown",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "nodemon --exec micro"
+  },
+  "author": "Philipp Bosch <philipp@acolorbright.com>",
+  "license": "ISC",
+  "dependencies": {
+    "micro": "^7.3.3",
+    "urlencoded-body-parser": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.7.0",
+    "nodemon": "^1.11.0"
+  },
+  "env": {
+    "SLACK_AUTH_TOKEN": "@slack-countdown-auth-token"
+  }
+}
