@@ -19,7 +19,8 @@
     "eslint-plugin-import": "^2.7.0",
     "nodemon": "^1.11.0"
   },
-  "node": {
+  "now": {
+    "alias": "slack-countdown.automat.io",
     "env": {
       "SLACK_AUTH_TOKEN": "@slack-countdown-auth-token"
     }
