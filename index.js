@@ -41,11 +41,11 @@ module.exports = async (req, res) => {
           iteration += 1;
           if (iteration > duration) {
             clearInterval(interval);
-            https.get(`https://slack.com/api/chat.postMessage?token=${TOKEN}&channel=${channel}&text=${encodeURIComponent(`@here 🚀 *${to || 'GO'}* 🚀`)}&ts=${ts}&pretty=1`);
+            https.get(`https://slack.com/api/chat.postMessage?token=${TOKEN}&channel=${channel}&text=${encodeURIComponent(`<!here> :rocket: *${to || 'GO'}* :rocket:`)}&pretty=1`);
             return;
           }
 
-          https.get(`https://slack.com/api/chat.update?token=${TOKEN}&channel=${channel}&text=%2A${duration - iteration}%20%E2%80%A6%2A&pretty=1`);
+          https.get(`https://slack.com/api/chat.update?token=${TOKEN}&channel=${channel}&text=%2A${duration - iteration}%20%E2%80%A6%2A&ts=${ts}&pretty=1`);
         }, 1000);
       });
     });
