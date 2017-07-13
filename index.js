@@ -4,6 +4,25 @@ const parse = require('urlencoded-body-parser');
 
 const TOKEN = process.env.SLACK_AUTH_TOKEN;
 
+const digitEmoji = (d) => {
+  const digit = parseInt(d, 10);
+  const emoji = [
+    ':zero:',
+    ':one:',
+    ':two:',
+    ':three:',
+    ':four:',
+    ':five:',
+    ':six:',
+    ':seven:',
+    ':eight:',
+    ':nine:',
+  ];
+  return emoji[digit];
+};
+
+const numberEmoji = (number, duration) => Array.from(number.toString().padStart(duration.toString().length, '0')).map(digitEmoji).join('');
+
 module.exports = async (req, res) => {
   const data = await parse(req);
   if (!data.text || !data.text.length) {
@@ -26,7 +45,7 @@ module.exports = async (req, res) => {
   const duration = parseInt(durationString, 10);
   const to = toParts.join(' ');
   https.get(`https://slack.com/api/chat.postMessage?token=${TOKEN}&channel=${data.channel_id}&text=${encodeURIComponent(`<@${data.user_id}|${data.user_name}> started a *${duration} seconds* countdown to *${to || 'something'}*`)}&pretty=1`, () => {
-    https.get(`https://slack.com/api/chat.postMessage?token=${TOKEN}&channel=${data.channel_id}&text=%2A${duration}%E2%80%A6%2A&pretty=1`, (cpres) => {
+    https.get(`https://slack.com/api/chat.postMessage?token=${TOKEN}&channel=${data.channel_id}&text=${encodeURIComponent(numberEmoji(duration, duration))}&pretty=1`, (cpres) => {
       cpres.setEncoding('utf8');
       let channel;
       let ts;
@@ -44,8 +63,7 @@ module.exports = async (req, res) => {
             https.get(`https://slack.com/api/chat.postMessage?token=${TOKEN}&channel=${channel}&text=${encodeURIComponent(`<!here> :rocket: *${to || 'GO'}* :rocket:`)}&pretty=1`);
             return;
           }
-
-          https.get(`https://slack.com/api/chat.update?token=${TOKEN}&channel=${channel}&text=%2A${duration - iteration}%20%E2%80%A6%2A&ts=${ts}&pretty=1`);
+          https.get(`https://slack.com/api/chat.update?token=${TOKEN}&channel=${channel}&text=${encodeURIComponent(numberEmoji(duration - iteration, duration))}&ts=${ts}&pretty=1`);
         }, 1000);
       });
     });
